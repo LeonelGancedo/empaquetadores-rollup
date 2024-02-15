@@ -1,7 +1,7 @@
 const $body = document.querySelector("body");
 const API = "https://api.escuelajs.co/api/v1/products/?offset=5&limit=10";
 import logo from "./assets/logo.png";
-import './styles/style.css';
+import './styles/styles.css';
 
 const main = async () => {
     const response = await fetch(API);
@@ -9,9 +9,9 @@ const main = async () => {
     const output = products.map((product) => {
         return `
         <article class="Card"> 
-            <img src="${product.images[0]}" />
+            <img src="${product.images[1]}" />
             <h3>
-                ${product.title} <small>Precio $${product.price}}</small>
+                ${product.title} <small>Precio $${product.price}</small>
             </h3>
         </article>
         `;
