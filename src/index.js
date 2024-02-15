@@ -1,28 +1,32 @@
-import html from '@rollup/plugin-html';
-import copy from 'rollup-plugin-copy';
-import css from 'rollup-plugin-css-only';
-import image from '@rollup/plugin-image';
+const $body = document.querySelector("body");
+const API = "https://api.escuelajs.co/api/v1/products/?offset=5&limit=10";
+import logo from "./assets/logo.png";
+import './styles/style.css';
 
-export default {
-    input: "src/index.js",
-    output: {
-        file: 'dist/bundle.js',
-        format: 'es',
-        sourcemap: true,
-    },
-    plugins: [
-        copy({
-            targets: [
-                {
-                    src: "src/assets/**/*",
-                    dest: "dist/assets"
-                }
-            ]
-        }),
-        css({
-            output: 'bundle.css'
-        }),
-        html(),
-        image(),
-    ]
-}
+const main = async () => {
+    const response = await fetch(API);
+    const products = await response.json();
+    const output = products.map((product) => {
+        return `
+        <article class="Card"> 
+            <img src="${product.images[0]}" />
+            <h3>
+                ${product.title} <small>Precio $${product.price}}</small>
+            </h3>
+        </article>
+        `;
+    }).join('');
+    const newItem = document.createElement("section");
+    newItem.classList.add('Items');
+    newItem.innerHTML = output;
+    
+    const newHeader = document.createElement('header');
+    const newImage = document.createElement('img');
+    newImage.src = logo;
+
+    newHeader.appendChild(newImage);
+    $body.appendChild(newHeader);
+    $body.appendChild(newItem);
+};
+
+main();
